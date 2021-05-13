@@ -1,0 +1,3 @@
+[submodule "WholesalerService/WholesalerService"]
+	path = WholesalerService/WholesalerService
+	url = https://gitlab.iut-clermont.uca.fr/clmaisonha/wholesaler-service.git
