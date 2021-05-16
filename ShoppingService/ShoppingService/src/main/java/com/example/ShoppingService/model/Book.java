@@ -8,6 +8,10 @@ public class Book {
 
     private int stock;
 
+    public Book(){
+
+    }
+
     public Book(String isbn, String title,int stock){
         this.isbn = isbn;
         this.title = title;
