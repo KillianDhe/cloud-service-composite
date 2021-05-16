@@ -4,3 +4,6 @@
 [submodule "ShoppingService/ShoppingService/src/main/java/com/example/ShoppingService/model"]
 	path = ShoppingService/ShoppingService/src/main/java/com/example/ShoppingService/model
 	url = https://gitlab.iut-clermont.uca.fr/clmaisonha/model-cloud.git
+[submodule "StockService/StockService/src/main/java/com/StockService/StockService/model"]
+	path = StockService/StockService/src/main/java/com/StockService/StockService/model
+	url = https://gitlab.iut-clermont.uca.fr/clmaisonha/model-cloud.git
