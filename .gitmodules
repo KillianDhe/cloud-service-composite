@@ -1,3 +1,6 @@
 [submodule "WholesalerService/WholesalerService"]
 	path = WholesalerService/WholesalerService
 	url = https://gitlab.iut-clermont.uca.fr/clmaisonha/wholesaler-service.git
+[submodule "ShoppingService/ShoppingService/src/main/java/com/example/ShoppingService/model"]
+	path = ShoppingService/ShoppingService/src/main/java/com/example/ShoppingService/model
+	url = https://gitlab.iut-clermont.uca.fr/clmaisonha/model-cloud.git
