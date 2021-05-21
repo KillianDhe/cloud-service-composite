@@ -2,23 +2,23 @@ package com.example.ShoppingService.controller;
 
 import com.example.ShoppingService.Exceptions.BookNotFoundException;
 import com.example.ShoppingService.model.Book;
+import com.example.ShoppingService.model.Order;
+import com.example.ShoppingService.model.Request.BuyBookRequest;
+import com.example.ShoppingService.model.Request.CreateAccountRequest;
 import com.example.ShoppingService.model.rowMapper.BookRowMapper;
 import com.example.ShoppingService.model.rowMapper.BookRowWithoutStockMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class BookController {
@@ -59,11 +59,12 @@ public class BookController {
     }
 
     @GetMapping(value = "/getBookByIsbn", produces = "application/json")
-    public @ResponseBody Book getBookByIsbn(@RequestParam String isbn, HttpServletResponse response) {
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody Book getBookByIsbn(@RequestParam String isbn) {
         try {
-            String sql = "SELECT isbn,title FROM BOOKS WHERE ISBN = ?";
-            boolean isbnExist = jdbcTemplate.queryForObject("SELECT EXISTS(SELECT FROM books WHERE isbn = ?)", Boolean.class, isbn);
+            boolean isbnExist = isIsbnExist(isbn);
             if(isbnExist){
+                String sql = "SELECT isbn,title FROM BOOKS WHERE ISBN = ?";
                 Book book =  jdbcTemplate.queryForObject(sql, new BookRowWithoutStockMapper(), isbn);
 
                 Integer stockBook = restTemplate.getForObject(URLStock,Integer.class,isbn);
@@ -81,6 +82,11 @@ public class BookController {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
         }
     }
+
+    private boolean isIsbnExist(String isbn) throws Exception {
+        return jdbcTemplate.queryForObject("SELECT EXISTS(SELECT FROM books WHERE isbn = ?)", Boolean.class, isbn);
+    }
+
 
     @GetMapping("/BookNotFoundError")
     public @ResponseBody
@@ -106,17 +112,51 @@ public class BookController {
         return new Book("123456","Example book",response);
     }
 
-    /**
-     * Méthode permettant simplement de tester , à modifier
-     * Cette méthode devra contenir du code client pour appeler StocvkService
-     * et certainement utililser un objet avec le stock du livre
-     * @param isbn
-     * @return
-     */
-    @GetMapping("/getStockOfBookByIsbn")
-    public @ResponseBody
-    String getStockOfBookByIsbn(@RequestParam String isbn) {
-        return "Stock of " + isbn + ": 8";
+
+    @PostMapping(value = "/buyBook", consumes = "application/json")
+    public @ResponseBody Order buyBook(@RequestBody BuyBookRequest request) {
+        try {
+            Book bookToBuy = getBookByIsbn(request.getIsbn());
+
+            String  URLWholesalerbuy = URLBaseWholesaler +"buyBook?isbn={isbn}?quantity={quantity}?account={account)";
+
+            Map<String, String> urlParameters = new HashMap<>();
+            urlParameters.put("account", Integer.toString(request.getAccountId()));
+            urlParameters.put("quantity", Long.toString(request.getQuantity()));
+            urlParameters.put("isbn", request.getIsbn());
+
+           Order order = restTemplate.getForObject(URLWholesalerbuy, Order.class,urlParameters);
+           return order;
+        }
+        catch (BookNotFoundException bookexc) {
+            throw  bookexc;
+        }
+        catch (ResponseStatusException responseEx){
+            throw  responseEx;
+        }
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"erreur inconnue, veuillez réessayer ulterieureent");
+        }
+    }
+
+    @PostMapping(value = "/createAccount", consumes = "application/json")
+    public @ResponseBody int buyBook(@RequestBody CreateAccountRequest request) {
+        try {
+            String sql = "INSERT INTO accounts (login, password) VALUES (?,?);";
+           // String passhashed =  new DigestUtils("SHA3-256").digestAsHex(request.getPassword());
+
+            int rows = jdbcTemplate.update(sql, request.getLogin());
+            if (rows == 0) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Impossible d'inserer un account dans la base");
+            }
+            //TODO get l'identifiant generé à partir du login unique et le donner au client;
+        } catch (ResponseStatusException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+        }
+
+        return 0;
     }
 
 }
