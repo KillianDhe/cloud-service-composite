@@ -1,7 +1,6 @@
 URLS :
 
 - ShoppingService (GAE) : https://shopping-dot-projetcloud-313614.ew.r.appspot.com
-
 - StockService (GAE) : https://stock-dot-projetcloud-313614.ew.r.appspot.com
 - WholesalerService (Herkou) : https://shielded-earth-62387.herokuapp.com
 
