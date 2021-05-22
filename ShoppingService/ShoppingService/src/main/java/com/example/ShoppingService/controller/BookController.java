@@ -3,12 +3,14 @@ package com.example.ShoppingService.controller;
 import com.example.ShoppingService.Exceptions.BookNotFoundException;
 import com.example.ShoppingService.model.Account;
 import com.example.ShoppingService.model.Book;
+import com.example.ShoppingService.model.BookWithoutStock;
 import com.example.ShoppingService.model.Order;
 import com.example.ShoppingService.model.Request.BuyBookRequest;
 import com.example.ShoppingService.model.Request.CreateAccountRequest;
 import com.example.ShoppingService.model.rowMapper.AccountRowMapper;
 import com.example.ShoppingService.model.rowMapper.BookRowMapper;
 import com.example.ShoppingService.model.rowMapper.BookRowWithoutStockMapper;
+import com.example.ShoppingService.model.rowMapper.BookWithoutStockRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -21,6 +23,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.json.JSONArray;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,10 +46,13 @@ public class BookController {
      * @return
      */
     @GetMapping(value = "/getallbooks", produces = "application/json")
-    public @ResponseBody List<Book> getallbooks() {
+    public @ResponseBody
+    List<BookWithoutStock> getallbooks() {
         try {
             String sql = "SELECT * FROM books";
-            return jdbcTemplate.query(sql, new BookRowWithoutStockMapper());
+            return jdbcTemplate.query(sql, new BookWithoutStockRowMapper());
+
+
         }catch (EmptyResultDataAccessException emptyResultDataAccessException ){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Aucun livre trouvé");
         }
