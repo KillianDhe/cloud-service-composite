@@ -1,0 +1,56 @@
+2021-05-22T20:06:00.510874+00:00 app[web.1]: 2021-05-22 20:06:00.510  INFO 4 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 45654 (http) with context path ''
+2021-05-22T20:06:00.566854+00:00 app[web.1]: 2021-05-22 20:06:00.561  INFO 4 --- [           main] c.W.W.WholesalerServiceApplication       : Started WholesalerServiceApplication in 10.951 seconds (JVM running for 12.282)
+2021-05-22T20:06:01.058328+00:00 heroku[web.1]: State changed from starting to up
+2021-05-22T20:06:24.640984+00:00 app[web.1]: 2021-05-22 20:06:24.640  INFO 4 --- [io-45654-exec-3] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-05-22T20:06:24.641309+00:00 app[web.1]: 2021-05-22 20:06:24.641  INFO 4 --- [io-45654-exec-3] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2021-05-22T20:06:24.643271+00:00 app[web.1]: 2021-05-22 20:06:24.643  INFO 4 --- [io-45654-exec-3] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2021-05-22T20:06:27.345721+00:00 app[web.1]: 2021-05-22 20:06:27.320  INFO 4 --- [io-45654-exec-3] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-05-22T20:06:27.968633+00:00 app[web.1]: 2021-05-22 20:06:27.968  INFO 4 --- [io-45654-exec-3] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-05-22T20:06:28.331178+00:00 heroku[router]: at=info method=POST path="/buyBook" host=shielded-earth-62387.herokuapp.com request_id=ba8b55b8-2806-46b3-af68-30e2126d3fe0 fwd="107.178.204.245" dyno=web.1 connect=0ms service=3760ms status=201 bytes=192 protocol=https
+2021-05-22T20:10:45.951508+00:00 heroku[router]: at=info method=POST path="/buyBook" host=shielded-earth-62387.herokuapp.com request_id=7d643b0b-3946-40b0-801e-007faa9dc896 fwd="107.178.204.245" dyno=web.1 connect=3ms service=478ms status=201 bytes=192 protocol=https
+2021-05-22T20:44:59.011131+00:00 heroku[web.1]: Idling
+2021-05-22T20:44:59.020528+00:00 heroku[web.1]: State changed from up to down
+2021-05-22T20:45:00.252949+00:00 heroku[web.1]: Stopping all processes with SIGTERM
+2021-05-22T20:45:00.600165+00:00 heroku[web.1]: Process exited with status 143
+2021-05-22T20:45:00.405466+00:00 app[web.1]: 2021-05-22 20:45:00.405  INFO 4 --- [extShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2021-05-22T20:45:00.407212+00:00 app[web.1]: 2021-05-22 20:45:00.406  INFO 4 --- [extShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2021-05-22T20:45:00.469952+00:00 app[web.1]: 2021-05-22 20:45:00.469  INFO 4 --- [extShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2021-05-22T20:56:16.022712+00:00 heroku[web.1]: Unidling
+2021-05-22T20:56:16.090544+00:00 heroku[web.1]: State changed from down to starting
+2021-05-22T20:56:19.402792+00:00 heroku[web.1]: Starting process with command `java -Dserver.port=14081 $JAVA_OPTS -jar target/WholesalerService-0.0.1-SNAPSHOT.jar`
+2021-05-22T20:56:21.748174+00:00 app[web.1]: Create a Procfile to customize the command used to run this process: https://devcenter.heroku.com/articles/procfile
+2021-05-22T20:56:21.767684+00:00 app[web.1]: Setting JAVA_TOOL_OPTIONS defaults based on dyno size. Custom settings will override them.
+2021-05-22T20:56:21.771326+00:00 app[web.1]: Picked up JAVA_TOOL_OPTIONS: -Xmx300m -Xss512k -XX:CICompilerCount=2 -Dfile.encoding=UTF-8 
+2021-05-22T20:56:23.278280+00:00 app[web.1]: 
+2021-05-22T20:56:23.278867+00:00 app[web.1]:   .   ____          _            __ _ _
+2021-05-22T20:56:23.278966+00:00 app[web.1]:  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+2021-05-22T20:56:23.279086+00:00 app[web.1]: ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+2021-05-22T20:56:23.279155+00:00 app[web.1]:  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+2021-05-22T20:56:23.279249+00:00 app[web.1]:   '  |____| .__|_| |_|_| |_\__, | / / / /
+2021-05-22T20:56:23.279338+00:00 app[web.1]:  =========|_|==============|___/=/_/_/_/
+2021-05-22T20:56:23.280772+00:00 app[web.1]:  :: Spring Boot ::                (v2.4.5)
+2021-05-22T20:56:23.280822+00:00 app[web.1]: 
+2021-05-22T20:56:23.593313+00:00 app[web.1]: 2021-05-22 20:56:23.584  INFO 4 --- [           main] c.W.W.WholesalerServiceApplication       : Starting WholesalerServiceApplication v0.0.1-SNAPSHOT using Java 1.8.0_292-heroku on 038c0f9f-634c-4c09-aea4-43989dcd5d31 with PID 4 (/app/target/WholesalerService-0.0.1-SNAPSHOT.jar started by u7924 in /app)
+2021-05-22T20:56:23.596610+00:00 app[web.1]: 2021-05-22 20:56:23.596  INFO 4 --- [           main] c.W.W.WholesalerServiceApplication       : No active profile set, falling back to default profiles: default
+2021-05-22T20:56:26.100484+00:00 app[web.1]: 2021-05-22 20:56:26.100  INFO 4 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 14081 (http)
+2021-05-22T20:56:26.129225+00:00 app[web.1]: 2021-05-22 20:56:26.128  INFO 4 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2021-05-22T20:56:26.129633+00:00 app[web.1]: 2021-05-22 20:56:26.129  INFO 4 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.45]
+2021-05-22T20:56:26.298111+00:00 app[web.1]: 2021-05-22 20:56:26.297  INFO 4 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2021-05-22T20:56:26.298372+00:00 app[web.1]: 2021-05-22 20:56:26.298  INFO 4 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2519 ms
+2021-05-22T20:56:27.056455+00:00 app[web.1]: 2021-05-22 20:56:27.056  INFO 4 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2021-05-22T20:56:27.669440+00:00 app[web.1]: 2021-05-22 20:56:27.669  INFO 4 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 14081 (http) with context path ''
+2021-05-22T20:56:27.687968+00:00 app[web.1]: 2021-05-22 20:56:27.687  INFO 4 --- [           main] c.W.W.WholesalerServiceApplication       : Started WholesalerServiceApplication in 5.121 seconds (JVM running for 5.916)
+2021-05-22T20:56:28.259719+00:00 heroku[web.1]: State changed from starting to up
+2021-05-22T20:56:30.204229+00:00 app[web.1]: 2021-05-22 20:56:30.203  INFO 4 --- [io-14081-exec-3] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-05-22T20:56:30.204416+00:00 app[web.1]: 2021-05-22 20:56:30.204  INFO 4 --- [io-14081-exec-3] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2021-05-22T20:56:30.206182+00:00 app[web.1]: 2021-05-22 20:56:30.205  INFO 4 --- [io-14081-exec-3] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2021-05-22T20:56:31.736768+00:00 app[web.1]: 2021-05-22 20:56:31.735  INFO 4 --- [io-14081-exec-3] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2021-05-22T20:56:31.988093+00:00 app[web.1]: 2021-05-22 20:56:31.987  INFO 4 --- [io-14081-exec-3] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2021-05-22T20:56:32.157426+00:00 heroku[router]: at=info method=POST path="/buyBook" host=shielded-earth-62387.herokuapp.com request_id=1d4cbc48-0cad-4402-bd57-9862775b0494 fwd="107.178.206.159" dyno=web.1 connect=0ms service=2003ms status=201 bytes=196 protocol=https
+2021-05-22T20:56:41.684974+00:00 heroku[router]: at=info method=POST path="/buyBook" host=shielded-earth-62387.herokuapp.com request_id=995ccfbf-6ee9-490c-a13e-15fe7209d7f2 fwd="107.178.206.159" dyno=web.1 connect=1ms service=312ms status=201 bytes=195 protocol=https
+2021-05-22T20:56:41.782680+00:00 heroku[router]: at=info method=POST path="/buyBook" host=shielded-earth-62387.herokuapp.com request_id=7ac7f1a4-eb24-423b-8941-43f96ae71be1 fwd="107.178.206.159" dyno=web.1 connect=1ms service=305ms status=201 bytes=196 protocol=https
+2021-05-22T20:56:41.879302+00:00 heroku[router]: at=info method=POST path="/buyBook" host=shielded-earth-62387.herokuapp.com request_id=48b4e37a-7b97-45eb-a776-c18dc219b1d6 fwd="107.178.206.159" dyno=web.1 connect=0ms service=208ms status=201 bytes=196 protocol=https
+2021-05-22T20:56:42.673092+00:00 heroku[router]: at=info method=POST path="/buyBook" host=shielded-earth-62387.herokuapp.com request_id=af73caef-5f29-41a7-8654-f45a79947341 fwd="107.178.206.159" dyno=web.1 connect=1ms service=201ms status=201 bytes=195 protocol=https
+2021-05-22T20:56:53.918199+00:00 heroku[router]: at=info method=POST path="/buyBook" host=shielded-earth-62387.herokuapp.com request_id=cc72ef62-7c70-4b33-a571-46437f0550c5 fwd="107.178.206.159" dyno=web.1 connect=0ms service=350ms status=201 bytes=196 protocol=https
+2021-05-22T20:56:54.113653+00:00 heroku[router]: at=info method=POST path="/buyBook" host=shielded-earth-62387.herokuapp.com request_id=ade27857-84f4-4fda-9b8d-6c816920a628 fwd="107.178.206.21" dyno=web.1 connect=0ms service=241ms status=201 bytes=196 protocol=https
+2021-05-22T20:56:54.192042+00:00 heroku[router]: at=info method=POST path="/buyBook" host=shielded-earth-62387.herokuapp.com request_id=d6d341bc-ff3e-49da-a8a9-8a79e6ac07d4 fwd="107.178.206.21" dyno=web.1 connect=1ms service=317ms status=201 bytes=197 protocol=https
