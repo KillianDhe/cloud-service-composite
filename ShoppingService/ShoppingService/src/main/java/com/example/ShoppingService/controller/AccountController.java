@@ -25,6 +25,7 @@ public class AccountController {
     private RestTemplate restTemplate;
 
     @PostMapping(value = "/createAccount", consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     Account createAccount(@RequestBody CreateAccountRequest request) {
         try {
