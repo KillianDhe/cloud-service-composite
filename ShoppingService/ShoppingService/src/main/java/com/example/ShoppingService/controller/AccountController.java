@@ -57,7 +57,7 @@ public class AccountController {
      * @param request
      * @return
      */
-    @GetMapping(value = "/getAccount", produces = "application/json")
+    @PostMapping(value = "/getAccount", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Account getAccount(@RequestBody CreateAccountRequest request) {
         try {
@@ -95,10 +95,9 @@ public class AccountController {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "mot de passe incorrect!");
             }
 
-
              sql = "UPDATE accounts SET password = ? WHERE login = ?";
 
-            int rows = jdbcTemplate.update(sql, request.getNewPassword(), request.getLogin());
+            int rows = jdbcTemplate.update(sql, DigestUtils.sha256Hex(request.getNewPassword()), request.getLogin());
             if (rows == 0) {
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Impossible de modifier le mot de passe, veuillez reeseayer ulterieurement :(");
             }

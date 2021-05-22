@@ -10,8 +10,12 @@ import com.example.ShoppingService.model.rowMapper.AccountRowMapper;
 import com.example.ShoppingService.model.rowMapper.BookRowMapper;
 import com.example.ShoppingService.model.rowMapper.BookRowWithoutStockMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.*;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -43,11 +47,19 @@ public class BookController {
         try {
             String sql = "SELECT * FROM books";
             return jdbcTemplate.query(sql, new BookRowWithoutStockMapper());
-        } catch (Exception e) {
+        }catch (EmptyResultDataAccessException emptyResultDataAccessException ){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Aucun livre trouvé");
+        }
+        catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"erreur interne de la lors de la récuperation de la lise de tous les livres, veuillez réessayer ulterieurement.");
         }
     }
 
+    /***
+     * Retourne un livre avec son stock (obtenu depuis le service stock)
+     * @param isbn
+     * @return
+     */
     @GetMapping(value = "/getBookByIsbn", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Book getBookByIsbn(@RequestParam String isbn) {
@@ -55,7 +67,13 @@ public class BookController {
             boolean isbnExist = isIsbnExist(isbn);
             if(isbnExist){
                 String sql = "SELECT isbn,title FROM BOOKS WHERE ISBN = ?";
-                Book book =  jdbcTemplate.queryForObject(sql, new BookRowWithoutStockMapper(), isbn);
+                Book book;
+                try{
+                     book =  jdbcTemplate.queryForObject(sql, new BookRowWithoutStockMapper(), isbn);
+                }
+                catch (EmptyResultDataAccessException emptyResultDataAccessException){
+                    throw new BookNotFoundException(isbn);
+                }
 
                 Integer stockBook = restTemplate.getForObject(URLStock,Integer.class,isbn);
                 book.setStock(stockBook);
@@ -65,42 +83,42 @@ public class BookController {
                 throw new BookNotFoundException(isbn);
             }
         }
-        catch (BookNotFoundException bookexc) {
-            throw  bookexc;
-        }
-        catch (Exception e) {
+        catch (ResponseStatusException | BookNotFoundException responseStatusException){
+            throw  responseStatusException;
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
         }
     }
 
-    private boolean isIsbnExist(String isbn) throws Exception {
-        return jdbcTemplate.queryForObject("SELECT EXISTS(SELECT FROM books WHERE isbn = ?)", Boolean.class, isbn);
+    private boolean isIsbnExist(String isbn) throws DataAccessException {
+        try {
+            return jdbcTemplate.queryForObject("SELECT EXISTS(SELECT FROM books WHERE isbn = ?)", Boolean.class, isbn);
+        }catch (DataAccessException dataAccessException){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Impossible de vérifier si cet isbn existe, veuillez réssayer ultérieurement");
+        }
     }
 
-
+    /**
+     * Permet d'acheter un livre ; c'est le service wholesaler qui s'en occupe, il crée une commande et commande des livres si necessaires
+     * @param request
+     * @return
+     */
     @PostMapping(value = "/buyBook", consumes = "application/json")
     public @ResponseBody Order buyBook(@RequestBody BuyBookRequest request) {
         try {
-            Book bookToBuy = getBookByIsbn(request.getIsbn());
+            boolean bookExist = isIsbnExist(request.getIsbn());
+            if(!bookExist)
+                throw new BookNotFoundException(request.getIsbn());
 
-            String  URLWholesalerbuy = URLBaseWholesaler +"buyBook?isbn={isbn}?quantity={quantity}?account={account)";
+            String  URLWholesalerbuy = URLBaseWholesaler +"buyBook";
 
-            Map<String, String> urlParameters = new HashMap<>();
-            urlParameters.put("account", Integer.toString(request.getAccountId()));
-            urlParameters.put("quantity", Long.toString(request.getQuantity()));
-            urlParameters.put("isbn", request.getIsbn());
-
-           Order order = restTemplate.getForObject(URLWholesalerbuy, Order.class,urlParameters);
-           return order;
+            Order order = restTemplate.postForObject( URLWholesalerbuy, request , Order.class );
+            return order;
         }
-        catch (BookNotFoundException bookexc) {
+        catch (BookNotFoundException | ResponseStatusException bookexc) {
             throw  bookexc;
-        }
-        catch (ResponseStatusException responseEx){
-            throw  responseEx;
-        }
-        catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"erreur inconnue, veuillez réessayer ulterieureent");
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
         }
     }
 
